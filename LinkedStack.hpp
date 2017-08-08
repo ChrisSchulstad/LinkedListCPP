@@ -1,18 +1,17 @@
 /***************************************************************
 Chris Schulstad
-LinkedList.hpp
-A Linked List data structure
-Practicing using pointers. Focusing on memory leak / 
+LinkedStack.hpp
+A stack with linked list implementation
 ***************************************************************/
 
-#ifndef _LINKED_LIST_GUARD
-#define _LINKED_LIST_GUARD 1
+#ifndef _LINKED_STACK_GUARD
+#define _LINKED_STACK_GUARD 1
 
 #include <iostream>
 
 using namespace std;
 
-class LinkedList {
+class LinkedStack {
 
 // Private node class to facilitate linked list
 private:
@@ -25,7 +24,6 @@ private:
 			_data = "";
 			_next = NULL;
 		}
-
 	};
 
 // Class Member Functions
@@ -33,29 +31,25 @@ public:
 	// LinkedList instance variables
 	unsigned _size;
 	Node* _head;
-	Node* _tail;
 
-	LinkedList() {
+	LinkedStack() {
 		_head = NULL;
-		_tail = NULL;
 		_size = 0;
 	}
 
-	LinkedList(const LinkedList& myList) {
-		_head = myList._head;
-		_tail = myList._tail;
-		_size = myList._size;
+	LinkedStack(const LinkedStack& myStack) {
+		_head = myStack._head;
+		_size = myStack._size;
 	}
 
-	~LinkedList() {
+	~LinkedStack() {
 		clear();
 	}
 
 	// TODO - fix
-	const LinkedList& operator=(const LinkedList& myList) {
-		_head = myList._head;
-		_tail = myList._tail;
-		_size = myList._size;
+	const LinkedStack& operator=(const LinkedStack& myStack) {
+		_head = myStack._head;
+		_size = myStack._size;
 	}
 
 	// Returns the data from the link of specified index
@@ -83,23 +77,20 @@ public:
 		return _size;
 	}
 
-	// Adds a new Link to the left of the LinkedList
-	void pushLeft(const std::string& item) {
+	// Adds a new Link to the left of the LinkedStack
+	void push(const std::string& item) {
 		Node* newNode = new Node();
 		newNode->_data = item;
 		newNode->_next = _head;
 
-		if (_tail == NULL) _tail = newNode;
 		_head = newNode;
-
 		_size++;
 	}
 
-	// Removes a Link from the left of the LinkedList
-	std::string popLeft() {
+	// Removes a Link from the left of the LinkedStack
+	std::string pop() {
 		// Handles special cases
-		if (isEmpty()) throw("Empty LinkedList");
-		if (_head == _tail) _tail = NULL;
+		if (isEmpty()) throw("Empty LinkedStack");
 
 		std::string retString = _head->_data;
 
@@ -113,7 +104,7 @@ public:
 	}
 
 	// Returns the data (std::string) from the head
-	std::string left() {
+	std::string top() {
 		return _head->_data;
 	}
 
@@ -143,7 +134,6 @@ public:
 			if (current->_data == myString) {
 				if (current == _head) _head = current->_next;
 				else previous->_next = current->_next;
-				if (current == _tail) _tail = previous;
 
 				_size--;
 				delete current;
@@ -158,19 +148,18 @@ public:
 		return false;
 	}
 
-	// Removes all links from the LinkedList
+	// Removes all links from the LinkedStack
 	void clear() {
 		while (_head != NULL) {
 			Node* temp = _head;
 			_head = _head->_next;
 			delete temp;
 		}
-		_tail = NULL;
 		_size = 0;
 	}
 
 	// Overloaded output operator
-	friend std::ostream& operator<<(std::ostream& os, const LinkedList& ell)
+	friend std::ostream& operator<<(std::ostream& os, const LinkedStack& ell)
 	{
 		for (Iterator itr = ell.begin(); itr != ell.end(); )
 		{
