@@ -46,7 +46,6 @@ public:
 		clear();
 	}
 
-	// TODO - fix
 	const LinkedStack& operator=(const LinkedStack& myStack) {
 		_head = myStack._head;
 		_size = myStack._size;
